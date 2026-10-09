@@ -1,6 +1,6 @@
 {
   "name": "software-forge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/wicttor/software-forge.git"
@@ -16,10 +16,21 @@
   "description": "A small, visual, runtime-agnostic software factory: planner, builder, reviewers and approver driven by an orchestrator (Claude Code skill included).",
   "license": "MIT",
   "keywords": [
-    "claude-code",
-    "agents",
     "software-forge",
-    "orchestrator"
+    "software-factory",
+    "claude-code",
+    "claude-code-skill",
+    "ai-agents",
+    "agentic",
+    "multi-agent",
+    "orchestrator",
+    "code-review",
+    "tdd",
+    "git-worktree",
+    "conventional-commits",
+    "cli",
+    "npx",
+    "dashboard"
   ],
   "bin": {
     "software-forge": "bin/software-forge.mjs"
