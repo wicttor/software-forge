@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-09T16:40:41.790Z",
+  "jobs": [
+    {
+      "id": "001-dry-run-duration-formatter",
+      "title": "Duration formatter",
+      "branch": "forge/001-dry-run-duration-formatter",
+      "stage": "merged",
+      "round": 2,
+      "risk": "Low",
+      "complexity": "LOW",
+      "reviews": {
+        "code": "PASS",
+        "security": "PASS",
+        "ux": "skipped",
+        "ui-design": "skipped"
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "reviews": {
+            "code": "CHANGES",
+            "security": "PASS",
+            "ux": "skipped",
+            "ui-design": "skipped"
+          }
+        },
+        {
+          "round": 2,
+          "reviews": {
+            "code": "PASS",
+            "security": "PASS",
+            "ux": "skipped",
+            "ui-design": "skipped"
+          }
+        }
+      ],
+      "files": [
+        "forge/jobs/001-dry-run-duration-formatter/build.md",
+        "forge/jobs/001-dry-run-duration-formatter/decision.md",
+        "forge/jobs/001-dry-run-duration-formatter/job.json",
+        "forge/jobs/001-dry-run-duration-formatter/round-1/review-code.md",
+        "forge/jobs/001-dry-run-duration-formatter/round-1/review-security.md",
+        "forge/jobs/001-dry-run-duration-formatter/round-2/review-code.md",
+        "forge/jobs/001-dry-run-duration-formatter/round-2/review-security.md",
+        "forge/jobs/001-dry-run-duration-formatter/spec.md",
+        "docs/plans/001-dry-run-duration-formatter.md",
+        "docs/review/001-dry-run-duration-formatter-round-2.md",
+        "docs/learnings/001-dry-run-duration-formatter-node-test-command.md"
+      ],
+      "runtime": "documented in forge/runtime-adapter.md",
+      "dryRun": true,
+      "updatedAt": "2026-10-09T16:40:41.784Z"
+    }
+  ],
+  "log": [
+    {
+      "at": "2026-10-09T16:24:12.624Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": null,
+      "to": "brainstorm",
+      "note": "job created"
+    },
+    {
+      "at": "2026-10-09T16:31:44.895Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "brainstorm",
+      "to": "planning",
+      "note": "grill complete"
+    },
+    {
+      "at": "2026-10-09T16:33:00.962Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "planning",
+      "to": "plan-approval",
+      "note": "plan ready: 5 ACs, reviewers code+security"
+    },
+    {
+      "at": "2026-10-09T16:36:29.277Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "plan-approval",
+      "to": "building",
+      "note": "plan approved by Wicttor (human, interactive approval); reviewers: code, security"
+    },
+    {
+      "at": "2026-10-09T16:37:17.143Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "building",
+      "to": "review",
+      "note": "round 1 build complete (5/5 green)"
+    },
+    {
+      "at": "2026-10-09T16:38:14.516Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "review",
+      "to": "building",
+      "note": "round 1 CHANGES (code): back to builder"
+    },
+    {
+      "at": "2026-10-09T16:38:50.520Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "building",
+      "to": "review",
+      "note": "round 2 build complete"
+    },
+    {
+      "at": "2026-10-09T16:39:34.741Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "review",
+      "to": "approval",
+      "note": "round 2 all PASS"
+    },
+    {
+      "at": "2026-10-09T16:40:37.533Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "approval",
+      "to": "approval",
+      "note": "merge authorized"
+    },
+    {
+      "at": "2026-10-09T16:40:41.784Z",
+      "job": "001-dry-run-duration-formatter",
+      "from": "approval",
+      "to": "merged",
+      "note": "feat(duration): add formatDuration compact duration formatter → forge/dry-run-base (12ab0bc5)"
+    }
+  ]
+}

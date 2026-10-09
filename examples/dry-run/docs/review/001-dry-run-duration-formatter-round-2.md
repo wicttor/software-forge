@@ -10,7 +10,7 @@ updated: 2026-10-09
 version: 1.0
 approver: "approver worker (claude-code Agent tool)"
 plan-id: 001-dry-run-duration-formatter
-branch-or-change: "factory/001-dry-run-duration-formatter (base factory/dry-run-base)"
+branch-or-change: "forge/001-dry-run-duration-formatter (base forge/dry-run-base)"
 ---
 
 # Loop Review Report: 001-dry-run-duration-formatter
@@ -20,7 +20,7 @@ branch-or-change: "factory/001-dry-run-duration-formatter (base factory/dry-run-
 - Plan: [001-dry-run-duration-formatter.md](../plans/001-dry-run-duration-formatter.md)
 - Review round: 2
 - Date: 2026-10-09
-- Branch or change reference: factory/001-dry-run-duration-formatter (base factory/dry-run-base)
+- Branch or change reference: forge/001-dry-run-duration-formatter (base forge/dry-run-base)
 - Final status: `APPROVE`
 - Human approval required: no
 - Human approval status: not applicable
@@ -49,10 +49,10 @@ Command: `node --test "sandbox/**/*.test.mjs"` in the worktree gives tests 5, pa
 
 | Reviewer | Verdict | Key findings | Source |
 |---|---|---|---|
-| Security | PASS | Minor only: MAX_SAFE_INTEGER RangeError beyond spec; round-1 huge-value finding resolved | factory/jobs/001-dry-run-duration-formatter/round-2/review-security.md |
+| Security | PASS | Minor only: MAX_SAFE_INTEGER RangeError beyond spec; round-1 huge-value finding resolved | forge/jobs/001-dry-run-duration-formatter/round-2/review-security.md |
 | UX | SKIPPED | Not assigned (no UI) | n/a |
 | UI design | SKIPPED | Not assigned (no UI) | n/a |
-| Code | PASS | Forced round-1 change landed; two minor planner-owned documentation items | factory/jobs/001-dry-run-duration-formatter/round-2/review-code.md |
+| Code | PASS | Forced round-1 change landed; two minor planner-owned documentation items | forge/jobs/001-dry-run-duration-formatter/round-2/review-code.md |
 | Accessibility | SKIPPED | Not assigned | n/a |
 | Data | SKIPPED | Not assigned | n/a |
 | Infrastructure | SKIPPED | Not assigned | n/a |

@@ -16,7 +16,7 @@ export function detectPackageManager(dir) {
 }
 
 // How to run a package script / the bin in this project, as text for docs and the skill.
-export function runCommand(pm, script = 'factory') {
+export function runCommand(pm, script = 'sforge') {
   return { npm: `npm run ${script} --`, pnpm: `pnpm ${script}`, yarn: `yarn ${script}`, bun: `bun run ${script}` }[pm.name] ?? `npm run ${script} --`;
 }
 

@@ -1,6 +1,6 @@
-Build a small, visual “software factory” in this repository using the code-agent
+Build a small, visual “software forge” in this repository using the code-agent
 runtime available to you. Keep it small enough that a viewer can understand the
-whole system in a few minutes. Inspect the repository first so the factory knows
+whole system in a few minutes. Inspect the repository first so the forge knows
 its language, test command, build command, and local conventions.
 
 The implementation must be portable across code-agent products. Do not assume a
@@ -12,19 +12,19 @@ with the same behavior.
 
 ## The orchestrator
 
-The factory has one orchestrator. The code-agent session that starts a run is
+The forge has one orchestrator. The code-agent session that starts a run is
 the orchestrator: it executes the loop below, launches or delegates every
 worker, waits for all required results, and is the only process allowed to write
-`factory/board.json`.
+`forge/board.json`.
 
-Keep runtime-specific integration in `factory/runtime-adapter.md` and, if
-needed, `factory/runtime/`. The adapter should document equivalents for:
+Keep runtime-specific integration in `forge/runtime-adapter.md` and, if
+needed, `forge/runtime/`. The adapter should document equivalents for:
 
 - starting a worker with a role and job context;
 - resuming the same worker for another review round;
 - waiting for worker completion;
 - sending a worker feedback from a later round; and
-- running the factory commands described below.
+- running the forge commands described below.
 
 Workers must communicate through files as the portable source of truth. Runtime
 messages are only a convenience for dispatch and notification.
@@ -52,7 +52,7 @@ isolated worktree + builder
                          second+ CHANGES ------------------------+--> needs-human
 ```
 
-The factory runs exactly one job per loop. After approval and merge, the loop
+The forge runs exactly one job per loop. After approval and merge, the loop
 ends and the next job requires a new loop invocation. The detailed data flow is:
 
 ```text
@@ -73,7 +73,7 @@ one for the workflow to function.
 ## Target file system
 
 ```text
-factory/
+forge/
   orchestrator.md             # provider-neutral orchestration contract
   runtime-adapter.md          # integration instructions for the active runtime
   agents/                     # one provider-neutral role file per worker
@@ -132,7 +132,7 @@ tests against the specification's acceptance criteria.
 
 ## Planning and test-driven development
 
-The planner is the first worker after a feature enters the factory. The
+The planner is the first worker after a feature enters the forge. The
 orchestrator must first conduct a brainstorm/grill session with the human to
 clarify the feature, constraints, acceptance criteria, complexity, risk, and
 reviewer needs. It must record the result in the job context.
@@ -165,7 +165,7 @@ reviewer set. Higher complexity requires broader test coverage (including
 additional unit, integration, or system coverage where appropriate), while the
 one-criterion/one-test mapping remains mandatory.
 
-Test-driven development is a factory-wide rule:
+Test-driven development is a forge-wide rule:
 
 1. The planner defines the acceptance criteria and their corresponding tests.
 2. The builder writes or updates the tests before, or in the same change as,
@@ -229,8 +229,8 @@ ESCALATE
 
 ## Rules
 
-- The orchestrator is the only writer of `factory/board.json`.
-- The factory runs one job per loop.
+- The orchestrator is the only writer of `forge/board.json`.
+- The forge runs one job per loop.
 - A plan must receive explicit human approval, recorded inside the plan, before
   a builder starts.
 - Builders must use isolated worktrees. If the runtime cannot provide worktree
@@ -281,7 +281,7 @@ Use stable, runtime-neutral values for `stage`:
   "jobs": [
     {
       "id": "003-rate-limiting",
-      "branch": "factory/003-rate-limiting",
+      "branch": "forge/003-rate-limiting",
       "stage": "review",
       "round": 2,
       "reviews": {
@@ -290,7 +290,7 @@ Use stable, runtime-neutral values for `stage`:
         "ui-design": "pending",
         "code": "PASS"
       },
-      "runtime": "documented in factory/runtime-adapter.md"
+      "runtime": "documented in forge/runtime-adapter.md"
     }
   ]
 }
@@ -305,10 +305,10 @@ Provide equivalent commands through the active runtime’s preferred interface
 (CLI, task runner, script, or documented manual procedure):
 
 ```text
-factory run <feature>               run a new job through the loop
-factory next                         run the first unchecked item in backlog.md
-factory approve <job-id>             merge a needs-human job after human approval
-factory rework <job-id> <note>       send a job back to the builder with feedback
+forge run <feature>               run a new job through the loop
+forge next                         run the first unchecked item in backlog.md
+forge approve <job-id>             merge a needs-human job after human approval
+forge rework <job-id> <note>       send a job back to the builder with feedback
 ```
 
 The command names are a stable conceptual interface. They do not require a
@@ -323,7 +323,7 @@ decides whether a learning is warranted based on the result of the loop.
 
 ## Dry run
 
-The factory must support a disposable dry run using a synthetic feature in a
+The forge must support a disposable dry run using a synthetic feature in a
 temporary isolated worktree. The dry run must exercise the complete lifecycle:
 brainstorm/grill, plan creation, human plan approval, red/green/refactor,
 reviewer assignment, one intentional first-round `CHANGES` result, builder
@@ -341,14 +341,14 @@ npx shadcn@latest init --preset b6Xthn9aW9 --base radix --template vite --pointe
 
 Preserve the preset’s generated conventions and use its Radix-based component
 system for the dashboard UI. The dashboard must still remain a lightweight
-read-only view of the factory state unless an action is explicitly implemented
+read-only view of the forge state unless an action is explicitly implemented
 and documented. Jobs appear as cards moving through the loop’s stages. Each
 review round appears as a row of reviewer chips that fill in as verdicts land.
 `needs-human` jobs stand out. Clicking a card opens or displays its Markdown
 files when the environment permits it.
 
-The dashboard may be built as a Vite project under `factory/dashboard/` rather
-than a single HTML file. It must read the durable `factory/board.json` state
+The dashboard may be built as a Vite project under `forge/dashboard/` rather
+than a single HTML file. It must read the durable `forge/board.json` state
 through an appropriate local development/static-serving mechanism and document
 the build and preview commands. Keep the visual design clean and minimal.
 If the active environment cannot run Node.js or `npx`, stop the dashboard setup
@@ -357,7 +357,7 @@ different UI stack.
 
 ## Completion checklist
 
-Before declaring the factory complete:
+Before declaring the forge complete:
 
 1. Inspect and document the repository language, test command, and conventions.
 2. Confirm that the workflow can run with the active runtime’s native features.
@@ -366,7 +366,7 @@ Before declaring the factory complete:
 5. Validate that all required files are created and that `board.json` remains
    valid JSON after each state transition.
 6. Start the dashboard and verify that it renders the sample board.
-7. Document every runtime-specific assumption in `factory/runtime-adapter.md`.
+7. Document every runtime-specific assumption in `forge/runtime-adapter.md`.
 8. Confirm that the project plan template is available and that the sample plan
    is stored under `docs/plans/`.
 9. Confirm that every sample acceptance criterion maps to a real automated test.

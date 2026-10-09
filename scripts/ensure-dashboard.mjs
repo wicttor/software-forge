@@ -10,6 +10,6 @@ const newest = (dir) => fs.readdirSync(dir, { withFileTypes: true, recursive: tr
 const dist = path.join(dash, 'dist/index.html');
 const stale = !fs.existsSync(dist) || newest(path.join(dash, 'src')) > fs.statSync(dist).mtimeMs;
 if (stale) {
-  if (!fs.existsSync(path.join(dash, 'node_modules'))) execFileSync('npm', ['ci'], { cwd: dash, stdio: 'inherit' });
-  execFileSync('npm', ['run', 'build'], { cwd: dash, stdio: 'inherit' });
+  if (!fs.existsSync(path.join(dash, 'node_modules'))) execFileSync(process.execPath, [path.join(root, 'scripts/dashboard.mjs'), 'install'], { stdio: 'inherit' });
+  execFileSync(process.execPath, [path.join(root, 'scripts/dashboard.mjs'), 'build'], { stdio: 'inherit' });
 }

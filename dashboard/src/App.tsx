@@ -264,7 +264,7 @@ export function App() {
   return (
     <div className="flex min-h-svh flex-col">
       <header className="flex flex-wrap items-center gap-3 border-b px-4 py-3">
-        <h1 className="text-lg font-semibold">Software Factory</h1>
+        <h1 className="text-lg font-semibold">Software Forge</h1>
         <Badge variant={sample ? "secondary" : "outline"}>{sample ? "sample board" : "live board"}</Badge>
         <button onClick={toggle} className="text-xs underline underline-offset-2 hover:text-primary">
           switch to {sample ? "live" : "sample"}

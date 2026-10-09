@@ -4,11 +4,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-export const WORKTREES_DIR = '.factory-worktrees';
-export const BOARD_REL = 'factory/board.json';
+export const WORKTREES_DIR = '.forge-worktrees';
+export const BOARD_REL = 'forge/board.json';
 
-// A factory project is the nearest ancestor that holds factory/board.json.
-// Commands run inside a builder worktree (<project>/.factory-worktrees/<id>) must
+// A forge project is the nearest ancestor that holds forge/board.json.
+// Commands run inside a builder worktree (<project>/.forge-worktrees/<id>) must
 // resolve to the main checkout, not to the worktree's own committed copy.
 export function findProjectRoot(start = process.cwd()) {
   let dir = path.resolve(start);
@@ -23,9 +23,9 @@ export function findProjectRoot(start = process.cwd()) {
   }
 }
 
-// FACTORY_REPO wins, so scripts and tests can point at any project explicitly.
+// FORGE_REPO wins, so scripts and tests can point at any project explicitly.
 export function resolveProject(start = process.cwd()) {
-  const explicit = process.env.FACTORY_REPO;
+  const explicit = process.env.FORGE_REPO;
   if (explicit) return path.resolve(explicit);
   return findProjectRoot(start);
 }

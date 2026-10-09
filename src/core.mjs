@@ -1,5 +1,5 @@
-// Pure, side-effect-free factory logic. Everything here is unit-tested in
-// test/core.test.mjs; file and git I/O lives in src/factory.mjs.
+// Pure, side-effect-free forge logic. Everything here is unit-tested in
+// test/core.test.mjs; file and git I/O lives in src/forge.mjs.
 
 export const STAGES = [
   'brainstorm', 'planning', 'plan-approval', 'building', 'review', 'approval',

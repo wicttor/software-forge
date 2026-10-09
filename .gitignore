@@ -1,4 +1,4 @@
 node_modules/
 dist/
-.factory-worktrees/
+.forge-worktrees/
 *.tmp

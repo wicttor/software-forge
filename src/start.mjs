@@ -7,12 +7,12 @@ import { fileURLToPath } from 'node:url';
 import { resolveProject } from './project.mjs';
 import { startDashboardServer, dashboardBuilt } from './dashboard-server.mjs';
 
-const stateFile = (root) => path.join(root, 'factory/.dashboard.json');
+const stateFile = (root) => path.join(root, 'forge/.dashboard.json');
 const BIN = fileURLToPath(new URL('../bin/software-forge.mjs', import.meta.url));
 
 function needProject() {
   const root = resolveProject();
-  if (!root) throw new Error('not a factory project (no factory/board.json above the current directory). Run "npx software-forge init" first.');
+  if (!root) throw new Error('not a forge project (no forge/board.json above the current directory). Run "npx software-forge init" first.');
   return root;
 }
 
@@ -69,11 +69,11 @@ export async function dashboardCommand(args) {
   if (o.stop) return stopDashboard();
   const running = await runningDashboard(root);
   if (running) { if (!o.quiet) console.log(`dashboard already running: http://localhost:${running.port} (pid ${running.pid})`); return; }
-  if (!dashboardBuilt()) throw new Error('the dashboard bundle is missing (dashboard/dist). In the software-forge package run "npm run dashboard:build".');
+  if (!dashboardBuilt()) throw new Error('the dashboard bundle is missing (dashboard/dist). In the software-forge package run the "dashboard:build" script (npm, pnpm, yarn or bun).');
 
   if (o.detach) {
     const child = spawn(process.execPath, [BIN, 'dashboard', '--port', String(o.port), '--quiet'], {
-      cwd: root, detached: true, stdio: 'ignore', env: { ...process.env, FACTORY_REPO: root },
+      cwd: root, detached: true, stdio: 'ignore', env: { ...process.env, FORGE_REPO: root },
     });
     child.unref();
     for (let i = 0; i < 40; i++) {
@@ -90,7 +90,7 @@ export async function dashboardCommand(args) {
   process.on('exit', cleanup);
   for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(sig, () => process.exit(0));
   server.on('close', cleanup);
-  if (!o.quiet) console.log(`factory dashboard: http://localhost:${port}  (project ${root})`);
+  if (!o.quiet) console.log(`forge dashboard: http://localhost:${port}  (project ${root})`);
 }
 
 export async function stopDashboard() {
@@ -102,9 +102,9 @@ export async function stopDashboard() {
 }
 
 const APPEND_PROMPT = [
-  'This project uses the software factory. When the user asks to build a feature through the factory,',
-  'or types /factory, load the "factory" skill and act as the orchestrator defined in factory/orchestrator.md.',
-  'The read-only board is the factory dashboard (already running when this session was started by `software-forge start`).',
+  'This project uses the software forge. When the user asks to build a feature through the forge,',
+  'or types /forge, load the "forge" skill and act as the orchestrator defined in forge/orchestrator.md.',
+  'The read-only board is the forge dashboard (already running when this session was started by `software-forge start`).',
 ].join(' ');
 
 // `software-forge start [feature...] [-- claude args]`: dashboard in the background, then Claude Code.
@@ -120,18 +120,18 @@ export async function startCommand(args) {
     if (before) console.log(`dashboard: http://localhost:${before.port} (already running)`);
     else {
       try { await dashboardCommand(['--detach', '--port', String(o.port), '--quiet']); started = true; }
-      catch (e) { console.error(`factory: dashboard not started: ${e.message}`); }
+      catch (e) { console.error(`forge: dashboard not started: ${e.message}`); }
       const st = await runningDashboard(root);
       if (st) console.log(`dashboard: http://localhost:${st.port}`);
     }
   }
   if (!o.claude) return;
 
-  const bin = process.env.FACTORY_CLAUDE_BIN || 'claude';
+  const bin = process.env.FORGE_CLAUDE_BIN || 'claude';
   const cargs = ['--append-system-prompt', APPEND_PROMPT, ...claudeExtra];
-  if (feature) cargs.push(`/factory ${feature}`);
+  if (feature) cargs.push(`/forge ${feature}`);
   const child = spawn(bin, cargs, { cwd: root, stdio: 'inherit' });
-  child.on('error', (e) => { console.error(`factory: cannot start "${bin}": ${e.message}`); process.exitCode = 127; });
+  child.on('error', (e) => { console.error(`forge: cannot start "${bin}": ${e.message}`); process.exitCode = 127; });
   await new Promise((resolve) => child.on('close', (code) => { process.exitCode = code ?? 0; resolve(); }));
 
   if (started && !o.keep) {

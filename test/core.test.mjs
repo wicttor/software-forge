@@ -14,7 +14,7 @@ const sample = JSON.parse(fs.readFileSync(path.join(here, '../dashboard/fixtures
 
 test('sample, starter and dry-run example boards are valid', () => {
   assert.deepEqual(validateBoard(sample), []);
-  for (const rel of ['../template/factory/board.json', '../examples/dry-run/factory/board.json']) {
+  for (const rel of ['../template/forge/board.json', '../examples/dry-run/forge/board.json']) {
     assert.deepEqual(validateBoard(JSON.parse(fs.readFileSync(path.join(here, rel), 'utf8'))), [], rel);
   }
 });
@@ -92,7 +92,7 @@ test('routeDecision: risk gates and contradictions', () => {
 });
 
 test('Conventional Commits 1.0.0', () => {
-  for (const ok of ['feat: add x', 'fix(api): handle null', 'feat(slugify)!: drop v1', 'docs(factory): note']) assert.ok(isConventionalCommit(ok), ok);
+  for (const ok of ['feat: add x', 'fix(api): handle null', 'feat(slugify)!: drop v1', 'docs(forge): note']) assert.ok(isConventionalCommit(ok), ok);
   for (const bad of ['Add x', 'feat:add x', 'feat(): x', 'FEAT: x', 'feat x']) assert.ok(!isConventionalCommit(bad), bad);
 });
 

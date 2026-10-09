@@ -29,13 +29,13 @@ function inside(file, dir) {
 
 // Handles /api/board and /api/file; calls next() for everything else.
 export function createApiHandler(repoRoot) {
-  const allowedDirs = [path.join(repoRoot, 'factory/jobs'), path.join(repoRoot, 'docs')];
+  const allowedDirs = [path.join(repoRoot, 'forge/jobs'), path.join(repoRoot, 'docs')];
   return function apiHandler(req, res, next) {
     const url = new URL(req.url ?? '/', 'http://localhost');
     if (req.method !== 'GET' && req.method !== 'HEAD') return next();
 
     if (url.pathname === '/api/board') {
-      const file = url.searchParams.get('source') === 'sample' ? SAMPLE_BOARD : path.join(repoRoot, 'factory/board.json');
+      const file = url.searchParams.get('source') === 'sample' ? SAMPLE_BOARD : path.join(repoRoot, 'forge/board.json');
       try {
         return send(res, 200, 'application/json; charset=utf-8', fs.readFileSync(file, 'utf8'));
       } catch {
@@ -86,7 +86,7 @@ export function dashboardBuilt(distDir = DASHBOARD_DIST) {
 // Starts the server on `port` (0 = any free port). Resolves { server, port }.
 export function startDashboardServer({ repoRoot, port = 5173, host = '127.0.0.1', distDir = DASHBOARD_DIST }) {
   if (!dashboardBuilt(distDir)) {
-    throw new Error(`dashboard is not built (${distDir}/index.html missing). Run "npm run dashboard:build" in the software-forge package.`);
+    throw new Error(`dashboard is not built (${distDir}/index.html missing). Run the "dashboard:build" script (npm, pnpm, yarn or bun) in the software-forge package.`);
   }
   const api = createApiHandler(repoRoot);
   const server = http.createServer((req, res) => {

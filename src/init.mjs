@@ -1,4 +1,4 @@
-// `software-forge init`: install the factory into the current git project.
+// `software-forge init`: install the forge into the current git project.
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -10,15 +10,15 @@ const PKG_NAME = readPackageJson().name;
 
 // Contracts are owned by the package and refreshed with --force. State belongs to the project: never overwritten.
 const STATE = new Set([
-  'factory/board.json', 'factory/backlog.md', 'docs/learnings/index.md',
-  'factory/jobs/.gitkeep', 'docs/plans/.gitkeep', 'docs/review/.gitkeep',
+  'forge/board.json', 'forge/backlog.md', 'docs/learnings/index.md',
+  'forge/jobs/.gitkeep', 'docs/plans/.gitkeep', 'docs/review/.gitkeep',
 ]);
-const GITIGNORE = [WORKTREES_DIR + '/', 'factory/.dashboard.json'];
+const GITIGNORE = [WORKTREES_DIR + '/', 'forge/.dashboard.json'];
 const SCRIPTS = {
-  factory: 'software-forge',
-  'factory:dashboard': 'software-forge dashboard',
-  'factory:start': 'software-forge start',
-  'factory:verify': 'software-forge verify',
+  sforge: 'software-forge',
+  'sforge:dashboard': 'software-forge dashboard',
+  'sforge:start': 'software-forge start',
+  'sforge:verify': 'software-forge verify',
 };
 
 function walk(dir, base = dir) {
@@ -50,13 +50,13 @@ export function init(rawArgs) {
   const report = [];
   const say = (kind, msg) => report.push(`  ${kind.padEnd(8)} ${msg}`);
 
-  // 1. The factory needs git worktrees and a base commit.
+  // 1. The forge needs git worktrees and a base commit.
   let top;
   try { top = execFileSync('git', ['rev-parse', '--show-toplevel'], { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim(); }
-  catch { throw new Error(`${dir} is not a git repository. Run "git init" and make a first commit; the factory builds in git worktrees.`); }
+  catch { throw new Error(`${dir} is not a git repository. Run "git init" and make a first commit; the forge builds in git worktrees.`); }
   if (fs.realpathSync(top) !== fs.realpathSync(dir)) throw new Error(`run init at the repository root (${top}), not in a subdirectory`);
   try { execFileSync('git', ['rev-parse', '--verify', 'HEAD'], { cwd: dir, stdio: 'ignore' }); }
-  catch { throw new Error('the repository has no commits yet. Make a first commit before installing the factory.'); }
+  catch { throw new Error('the repository has no commits yet. Make a first commit before installing the forge.'); }
 
   const write = (rel, content) => {
     if (!opts.dryRun) { fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true }); fs.writeFileSync(path.join(dir, rel), content); }
@@ -66,7 +66,7 @@ export function init(rawArgs) {
 
   // 2. Copy contracts and starter state.
   const targets = [
-    ...walk(path.join(TEMPLATE, 'factory'), TEMPLATE),
+    ...walk(path.join(TEMPLATE, 'forge'), TEMPLATE),
     ...walk(path.join(TEMPLATE, 'docs'), TEMPLATE),
     ...(opts.skill ? walk(path.join(TEMPLATE, 'claude'), TEMPLATE) : []),
   ];
@@ -129,8 +129,8 @@ export function init(rawArgs) {
   console.log(`
 Done. Next:
   git add -A && git commit -m "chore: add software-forge"   # worktrees branch from a committed base
-  claude            # then type: /factory <feature>
+  claude            # then type: /forge <feature>
   ${RUN} verify     # sanity-check the install
   npx software-forge start "<feature>"  # Claude + dashboard together (http://localhost:5173)
-Edit factory/runtime-adapter.md ("Repository facts") to describe this project.`);
+Edit forge/runtime-adapter.md ("Repository facts") to describe this project.`);
 }

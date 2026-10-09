@@ -28,7 +28,7 @@ Deliver a pure ESM function `formatDuration(ms)` (Node >= 20, zero dependencies)
 ### Out of scope
 
 - Any production code change, dependencies, I/O, localization, weeks/months/years, rounding options.
-- Any change on `main`; code lives only on `factory/001-dry-run-duration-formatter`.
+- Any change on `main`; code lives only on `forge/001-dry-run-duration-formatter`.
 
 ## High-Level Technical Design
 
@@ -166,7 +166,7 @@ Inline literals only; no fixtures, services or credentials. Run from the worktre
 - Feature flags: none.
 - Monitoring: none.
 - Data migration: none.
-- Rollback plan: discard branch `factory/001-dry-run-duration-formatter`.
+- Rollback plan: discard branch `forge/001-dry-run-duration-formatter`.
 - Performance baseline: constant time, negligible.
 
 ## Definition of Done

@@ -1,6 +1,6 @@
 # Setup log
 
-Run from `factory/`:
+Run from `forge/`:
 
 ```
 npx shadcn@latest init --preset b6Xthn9aW9 --base radix --template vite --pointer --name dashboard -y --no-monorepo
@@ -18,7 +18,7 @@ Key output:
 Project initialization completed.
 ```
 
-Then, from `factory/dashboard/`:
+Then, from `forge/dashboard/`:
 
 ```
 npx shadcn@latest add card badge sheet scroll-area separator tooltip -y

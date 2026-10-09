@@ -6,13 +6,13 @@ const HELP = `software-forge <command>
 
 Setup
   init [dir] [--force] [--no-install] [--no-skill] [--spec <dep spec>] [--dry-run]
-                       install the factory into the current git project
+                       install the forge into the current git project
 Run
   start [feature] [--port n] [--no-dashboard] [--keep-dashboard] [-- <claude args>]
-                       dashboard in the background + Claude Code with the factory skill
+                       dashboard in the background + Claude Code with the forge skill
   dashboard [--port n] [--detach] [--stop]
                        read-only board (default http://localhost:5173)
-Jobs (run inside an initialized project; see factory/orchestrator.md)
+Jobs (run inside an initialized project; see forge/orchestrator.md)
   run next stage approve-plan worktree brief round decide merge approve rework verify event
 `;
 
@@ -25,8 +25,8 @@ async function main() {
   if (cmd === 'init') return (await import('../src/init.mjs')).init(rest);
   if (cmd === 'dashboard') return (await import('../src/start.mjs')).dashboardCommand(rest);
   if (cmd === 'start') return (await import('../src/start.mjs')).startCommand(rest);
-  // Everything else is a job command; src/factory.mjs reads process.argv itself.
-  await import('../src/factory.mjs');
+  // Everything else is a job command; src/forge.mjs reads process.argv itself.
+  await import('../src/forge.mjs');
 }
 
 main().catch((e) => {

@@ -6,13 +6,13 @@ import { defineConfig, type Plugin } from "vite"
 import { createApiHandler } from "../src/dashboard-server.mjs"
 
 // The same read-only API the packaged dashboard server uses (src/dashboard-server.mjs).
-// FACTORY_REPO picks the project to show; the default is the bundled dry-run example.
-const repoRoot = path.resolve(process.env.FACTORY_REPO ?? path.join(import.meta.dirname, "../examples/dry-run"))
+// FORGE_REPO picks the project to show; the default is the bundled dry-run example.
+const repoRoot = path.resolve(process.env.FORGE_REPO ?? path.join(import.meta.dirname, "../examples/dry-run"))
 const apiHandler = createApiHandler(repoRoot)
 
-function factoryApi(): Plugin {
+function forgeApi(): Plugin {
   return {
-    name: "factory-api",
+    name: "forge-api",
     configureServer(server) {
       server.middlewares.use(apiHandler)
     },
@@ -24,7 +24,7 @@ function factoryApi(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), factoryApi()],
+  plugins: [react(), tailwindcss(), forgeApi()],
   resolve: {
     alias: {
       "@": resolve(import.meta.dirname, "./src"),

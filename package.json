@@ -1,6 +1,6 @@
 {
   "name": "software-forge",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/wicttor/software-forge.git"
@@ -13,11 +13,10 @@
   },
   "private": false,
   "type": "module",
-  "description": "A small, visual, runtime-agnostic software factory: planner, builder, reviewers and approver driven by an orchestrator (Claude Code skill included).",
+  "description": "A small, visual, runtime-agnostic software forge: planner, builder, reviewers and approver driven by an orchestrator (Claude Code skill included).",
   "license": "MIT",
   "keywords": [
     "software-forge",
-    "software-factory",
     "claude-code",
     "claude-code-skill",
     "ai-agents",
@@ -45,12 +44,12 @@
     "README.md"
   ],
   "scripts": {
-    "factory": "node bin/software-forge.mjs",
+    "sforge": "node bin/software-forge.mjs",
     "test": "node --test test/*.test.mjs",
-    "dashboard": "npm --prefix dashboard run dev",
-    "dashboard:install": "npm --prefix dashboard ci",
-    "dashboard:build": "npm --prefix dashboard run build",
-    "dashboard:preview": "npm --prefix dashboard run preview",
+    "dashboard": "node scripts/dashboard.mjs dev",
+    "dashboard:install": "node scripts/dashboard.mjs install",
+    "dashboard:build": "node scripts/dashboard.mjs build",
+    "dashboard:preview": "node scripts/dashboard.mjs preview",
     "prepack": "node scripts/ensure-dashboard.mjs"
   },
   "engines": {
