@@ -1,4 +1,4 @@
-# software-forge
+# Software Forge
 
 A small, visual, runtime-agnostic software factory, packaged for npm. One
 orchestrator (the Claude Code session that starts a run) takes **one feature**
@@ -17,26 +17,21 @@ feature → grill (human) → planner → human plan approval → worktree + bui
 Needs Node >= 20 and a git repository with at least one commit.
 
 ```bash
-# local package (until it is published): build the dashboard bundle once
-npm run dashboard:install && npm run dashboard:build
-
 cd /path/to/your-project
-node /path/to/software-forge/bin/software-forge.mjs init
+npx software-forge init
 git add -A && git commit -m "chore: add software-forge"
 ```
 
-Once published this becomes `npx software-forge init`.
-
 `init` is idempotent. It:
 
-| Step | Result |
-|---|---|
-| Copies the contracts | `factory/orchestrator.md`, `factory/runtime-adapter.md`, `factory/agents/*`, `docs/templates/*` |
-| Creates starter state, never overwriting it | `factory/board.json`, `factory/backlog.md`, `factory/jobs/`, `docs/{plans,review,learnings}/` |
-| Adds the Claude Code project skill | `.claude/skills/factory/SKILL.md` (`/factory`) |
-| Updates `.gitignore` | `.factory-worktrees/`, `factory/.dashboard.json` |
-| Updates `package.json` | scripts `factory`, `factory:dashboard`, `factory:start`, `factory:verify`; `software-forge` as a devDependency (`file:` path now, `^version` once published). Creates a minimal private `package.json` if there is none |
-| Installs | with the detected package manager (npm, pnpm, yarn or bun) |
+| Step                                        | Result                                                                                                                                                                                                                  |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Copies the contracts                        | `factory/orchestrator.md`, `factory/runtime-adapter.md`, `factory/agents/*`, `docs/templates/*`                                                                                                                         |
+| Creates starter state, never overwriting it | `factory/board.json`, `factory/backlog.md`, `factory/jobs/`, `docs/{plans,review,learnings}/`                                                                                                                           |
+| Adds the Claude Code project skill          | `.claude/skills/factory/SKILL.md` (`/factory`)                                                                                                                                                                          |
+| Updates `.gitignore`                        | `.factory-worktrees/`, `factory/.dashboard.json`                                                                                                                                                                        |
+| Updates `package.json`                      | scripts `factory`, `factory:dashboard`, `factory:start`, `factory:verify`; `software-forge` as a devDependency (`^version`). Creates a minimal private `package.json` if there is none |
+| Installs                                    | with the detected package manager (npm, pnpm, yarn or bun)                                                                                                                                                              |
 
 Options: `--force` refreshes contracts and the skill (state is still kept),
 `--no-install`, `--no-skill`, `--spec <dep spec>`, `--dry-run`, `[dir]`.
@@ -84,14 +79,14 @@ Commands find the project by walking up to the nearest `factory/board.json`
 
 ## What lives where
 
-| Path | |
-|---|---|
-| `bin/software-forge.mjs` | The single bin: `init`, `start`, `dashboard`, and the job commands |
-| `src/` | `factory.mjs` (job CLI), `core.mjs` (pure logic), `init.mjs`, `start.mjs`, `dashboard-server.mjs`, `pm.mjs`, `project.mjs` |
-| `template/` | Everything `init` copies: `factory/` contracts and starters, `docs/`, `claude/skills/factory/` |
-| `dashboard/` | Vite + React + shadcn source; `dashboard/dist` is the prebuilt bundle that ships and is served by plain Node |
-| `examples/dry-run/` | Evidence of the first full run (job `001-dry-run-duration-formatter`): spec, plan, two review rounds, report, learning, and the original runtime notes. `FACTORY_REPO=examples/dry-run npm run dashboard` shows it |
-| `test/` | Unit tests, the end-to-end fallback test, `init`/dashboard/`start` tests (`npm test`) |
+| Path                     |                                                                                                                                                                                                                    |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `bin/software-forge.mjs` | The single bin: `init`, `start`, `dashboard`, and the job commands                                                                                                                                                 |
+| `src/`                   | `factory.mjs` (job CLI), `core.mjs` (pure logic), `init.mjs`, `start.mjs`, `dashboard-server.mjs`, `pm.mjs`, `project.mjs`                                                                                         |
+| `template/`              | Everything `init` copies: `factory/` contracts and starters, `docs/`, `claude/skills/factory/`                                                                                                                     |
+| `dashboard/`             | Vite + React + shadcn source; `dashboard/dist` is the prebuilt bundle that ships and is served by plain Node                                                                                                       |
+| `examples/dry-run/`      | Evidence of the first full run (job `001-dry-run-duration-formatter`): spec, plan, two review rounds, report, learning, and the original runtime notes. `FACTORY_REPO=examples/dry-run npm run dashboard` shows it |
+| `test/`                  | Unit tests, the end-to-end fallback test, `init`/dashboard/`start` tests (`npm test`)                                                                                                                              |
 
 Project contracts are copied (not referenced) so you can edit agents and the
 orchestrator per project. `init --force` pulls in newer versions.
@@ -101,9 +96,5 @@ orchestrator per project. `init --force` pulls in newer versions.
 ```bash
 npm test                          # 26 tests, no network
 npm run dashboard:install && npm run dashboard   # Vite dev server, FACTORY_REPO selects the project
-npm run dashboard:build           # rebuild dashboard/dist (prepack does it when stale)
-npm pack --dry-run                # check what would be published
+npm run dashboard:build           # rebuild dashboard/dist
 ```
-
-To publish: `npm publish`; `prepack` rebuilds
-the dashboard if its sources are newer than `dist`.
