@@ -1,14 +1,48 @@
 {
-  "name": "software-factory",
-  "private": true,
-  "type": "module",
-  "description": "A small, visual, runtime-agnostic software factory (see factory/orchestrator.md).",
-  "scripts": {
-    "factory": "node factory/bin/factory.mjs",
-    "test": "node --test factory/test/*.test.mjs",
-    "dashboard": "npm --prefix factory/dashboard run dev",
-    "dashboard:build": "npm --prefix factory/dashboard run build",
-    "dashboard:preview": "npm --prefix factory/dashboard run preview"
+  "name": "software-forge",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wicttor/software-forge.git"
   },
-  "engines": { "node": ">=20" }
+  "homepage": "https://wicttor.com/software-forge",
+  "author": {
+    "email": "picanco@wicttor.com",
+    "name": "Wicttor Picanco",
+    "url": "https://wicttor.com"
+  },
+  "private": false,
+  "type": "module",
+  "description": "A small, visual, runtime-agnostic software factory: planner, builder, reviewers and approver driven by an orchestrator (Claude Code skill included).",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agents",
+    "software-forge",
+    "orchestrator"
+  ],
+  "bin": {
+    "software-forge": "bin/software-forge.mjs"
+  },
+  "files": [
+    "bin",
+    "src",
+    "template",
+    "LICENSE",
+    "dashboard/dist",
+    "dashboard/fixtures",
+    "README.md"
+  ],
+  "scripts": {
+    "factory": "node bin/software-forge.mjs",
+    "test": "node --test test/*.test.mjs",
+    "dashboard": "npm --prefix dashboard run dev",
+    "dashboard:install": "npm --prefix dashboard ci",
+    "dashboard:build": "npm --prefix dashboard run build",
+    "dashboard:preview": "npm --prefix dashboard run preview",
+    "prepack": "node scripts/ensure-dashboard.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

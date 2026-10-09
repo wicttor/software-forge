@@ -7,14 +7,16 @@ import {
   canTransition, nextJobId, validateBoard, parseReview, parseDecision, parseAssignedReviewers,
   parsePlanMatrix, evaluateRound, routeDecision, isConventionalCommit, checkLearningsIndex,
   parseFrontMatter, setFrontMatter,
-} from '../lib/core.mjs';
+} from '../src/core.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const sample = JSON.parse(fs.readFileSync(path.join(here, '../fixtures/sample-board.json'), 'utf8'));
+const sample = JSON.parse(fs.readFileSync(path.join(here, '../dashboard/fixtures/sample-board.json'), 'utf8'));
 
-test('sample board and live board are valid', () => {
+test('sample, starter and dry-run example boards are valid', () => {
   assert.deepEqual(validateBoard(sample), []);
-  assert.deepEqual(validateBoard(JSON.parse(fs.readFileSync(path.join(here, '../board.json'), 'utf8'))), []);
+  for (const rel of ['../template/factory/board.json', '../examples/dry-run/factory/board.json']) {
+    assert.deepEqual(validateBoard(JSON.parse(fs.readFileSync(path.join(here, rel), 'utf8'))), [], rel);
+  }
 });
 
 test('validateBoard rejects unknown stages, bad review values and duplicate ids', () => {

@@ -8,15 +8,12 @@ import path from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-const SRC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const SRC = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 function sandbox() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'factory-e2e-'));
-  for (const p of ['factory/bin', 'factory/lib', 'factory/agents', 'docs/templates']) {
-    fs.cpSync(path.join(SRC, p), path.join(dir, p), { recursive: true });
-  }
-  for (const p of ['factory/jobs', 'docs/plans', 'docs/review', 'docs/learnings']) fs.mkdirSync(path.join(dir, p), { recursive: true });
-  fs.writeFileSync(path.join(dir, 'factory/board.json'), JSON.stringify({ version: 1, updatedAt: '', jobs: [], log: [] }));
+  // The project files `init` would create, copied straight from the package template.
+  for (const p of ['factory', 'docs']) fs.cpSync(path.join(SRC, 'template', p), path.join(dir, p), { recursive: true });
   fs.writeFileSync(path.join(dir, 'factory/backlog.md'), '# Backlog\n\n- [ ] Add greeting helper\n- [ ] Second thing\n');
   fs.writeFileSync(path.join(dir, '.gitignore'), '.factory-worktrees/\n');
   const g = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8' });
@@ -25,7 +22,7 @@ function sandbox() {
   g('config', 'user.name', 'e2e');
   g('add', '-A');
   g('commit', '-qm', 'chore: init');
-  const cli = (...args) => spawnSync('node', [path.join(dir, 'factory/bin/factory.mjs'), ...args], { cwd: dir, encoding: 'utf8' });
+  const cli = (...args) => spawnSync('node', [path.join(SRC, 'bin/software-forge.mjs'), ...args], { cwd: dir, encoding: 'utf8' });
   const ok = (...args) => { const r = cli(...args); assert.equal(r.status, 0, `${args.join(' ')}\n${r.stderr}`); return r.stdout.trim(); };
   const board = () => JSON.parse(fs.readFileSync(path.join(dir, 'factory/board.json'), 'utf8'));
   const job = (id) => board().jobs.find((j) => j.id === id);

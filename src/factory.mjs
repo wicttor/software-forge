@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 // Software factory CLI — the orchestrator's state tool and the manual fallback.
-// Usage: node factory/bin/factory.mjs <command> [...args]   (see factory/orchestrator.md)
+// Usage: software-forge <command> [...args]   (see factory/orchestrator.md in a project)
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { resolveProject, PACKAGE_ROOT, WORKTREES_DIR } from './project.mjs';
 import {
   STAGES, REVIEWER_ROLES, WORKER_ROLES, canTransition, nextJobId, validateBoard,
   parseFrontMatter, setFrontMatter, parseAssignedReviewers, parsePlanMatrix, parseDecision,
   parseReview, evaluateRound, routeDecision, isConventionalCommit, checkLearningsIndex,
-} from '../lib/core.mjs';
+} from './core.mjs';
 
-const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const REPO = resolveProject() ?? (console.error('factory: not a factory project (no factory/board.json above the current directory). Run `npx software-forge init` first, or set FACTORY_REPO.'), process.exit(1));
 const FACTORY = path.join(REPO, 'factory');
 const BOARD = path.join(FACTORY, 'board.json');
 const JOBS = path.join(FACTORY, 'jobs');
@@ -136,7 +136,7 @@ const commands = {
       branch,
       baseBranch,
       dryRun,
-      worktreePath: `.factory-worktrees/${id}`,
+      worktreePath: `${WORKTREES_DIR}/${id}`,
       runtime: {
         name: process.env.FACTORY_RUNTIME || 'unspecified',
         adapter: 'factory/runtime-adapter.md',
@@ -377,7 +377,7 @@ When finished, reply with one line: the path(s) you wrote and your verdict/decis
       mergeSha = git(['rev-parse', 'HEAD']);
     } else {
       // Base not checked out here (e.g. the disposable dry-run base): merge in a scratch worktree.
-      const tmp = path.join(REPO, '.factory-worktrees', `_merge-${id}`);
+      const tmp = path.join(REPO, WORKTREES_DIR, `_merge-${id}`);
       git(['worktree', 'add', tmp, meta.baseBranch]);
       try {
         git(['merge', '--no-ff', '-m', mergeMsg, meta.branch], tmp);
@@ -437,7 +437,7 @@ When finished, reply with one line: the path(s) you wrote and your verdict/decis
       'factory/orchestrator.md', 'factory/runtime-adapter.md', 'factory/board.json', 'factory/backlog.md',
       ...['planner', 'builder', 'approver'].map((r) => `factory/agents/${r}.md`),
       ...REVIEWER_ROLES.map((r) => `factory/agents/${r}-reviewer.md`),
-      'factory/dashboard/package.json', 'docs/templates/plan-template.md', 'docs/templates/review-template.md',
+      'docs/templates/plan-template.md', 'docs/templates/review-template.md',
       'docs/templates/learnings-template.md', 'docs/learnings/index.md',
     ];
     for (const f of required) check(fs.existsSync(path.join(REPO, f)), `exists: ${f}`);
@@ -501,7 +501,8 @@ When finished, reply with one line: the path(s) you wrote and your verdict/decis
   },
 
   help() {
-    console.log(fs.readFileSync(path.join(FACTORY, 'orchestrator.md'), 'utf8').split('## Commands')[1].split('## `board.json`')[0].trim());
+    const doc = readText(path.join(FACTORY, 'orchestrator.md')) ?? readText(path.join(PACKAGE_ROOT, 'template/factory/orchestrator.md'));
+    console.log(doc.split('## Commands')[1].split('## `board.json`')[0].trim());
   },
 };
 

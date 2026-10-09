@@ -3,7 +3,7 @@
 This contract does not depend on any provider. The code-agent session that starts a run **is** the
 orchestrator. It runs the loop below, launches every worker, waits for every
 required result, and is the **only** writer of `factory/board.json`. It writes
-the board only through `node factory/bin/factory.mjs`, which validates the JSON
+the board only through the `software-forge` CLI, which validates the JSON
 after every write and appends one entry to `board.log` for each transition.
 
 How the active runtime starts, resumes, waits on and messages workers is
@@ -58,15 +58,19 @@ feature ─▶ brainstorm/grill (human) ─▶ planner ─▶ human plan approva
   `APPROVE` while some review is not `PASS`, it also routes to `needs-human`
   and records the reason as `blocker`. A setup error, such as a missing plan
   template, ends in `failed`.
-- The dashboard is a Vite project in `factory/dashboard/`. It replaces the
-  spec's single `factory/dashboard.html`, which the spec explicitly allows.
+- The dashboard ships with the `software-forge` package (`software-forge
+  dashboard`). It is read-only and replaces the spec's single
+  `factory/dashboard.html`, which the spec explicitly allows.
 - The builder is never resumed while a review round is incomplete.
 - A worker never overwrites another worker's output file.
 
 ## Commands
 
-All commands are run as `node factory/bin/factory.mjs <command>`. `npm run
-factory -- <command>` from the repository root does the same thing.
+All commands are run as `software-forge <command>` (the package's bin). In
+this project that is `npx software-forge <command>`, `pnpm exec software-forge
+<command>`, or the `factory` package script (`npm run factory -- <command>`,
+`pnpm factory <command>`). Below, `factory <command>` is shorthand for any of
+these.
 
 | Command | Purpose |
 |---------|---------|
@@ -131,7 +135,7 @@ also has one **append-only** array, `events`. The spec calls `job.json`
 identity. These two rules reconcile the conflict: core fields never change, and
 events (`grill`, `plan-approval`, `worker` with role and agent identity,
 `continuity`, `round-complete`, `decision`, `merge`) are only ever added.
-`node factory/bin/factory.mjs` writes these events for the orchestrator.
+`software-forge` writes these events for the orchestrator.
 
 ## Output contracts
 

@@ -8,9 +8,11 @@ out in red, and clicking a card opens a side panel with its Markdown/JSON files.
 
 ```
 npm install
-npm run dev                      # http://localhost:5173
-npm run build && npm run preview # production build, served by vite preview
+npm run dev                      # http://localhost:5173, shows examples/dry-run (FACTORY_REPO=<project> to change)
+npm run build                    # writes dist/, which the software-forge package serves
 ```
+
+In a project, use `software-forge dashboard` (serves `dist/` with `src/dashboard-server.mjs`).
 
 The board is polled every 2 seconds; if a poll fails the last good state stays on screen and an
 error indicator appears in the header.
@@ -18,7 +20,7 @@ error indicator appears in the header.
 ## API (served by a small Vite plugin in dev and preview)
 
 - `GET /api/board` returns `factory/board.json`; `?source=sample` returns
-  `factory/fixtures/sample-board.json`.
+  `dashboard/fixtures/sample-board.json`.
 - `GET /api/file?path=<repo-relative path>` returns raw text of a `.md` or `.json` file, only if it
   resolves inside `factory/jobs/` or `docs/` (anything else, including `..` traversal, gets 403).
   Responses are sent with no-cache headers.
@@ -26,7 +28,7 @@ error indicator appears in the header.
 ## Read-only
 
 The dashboard has no write endpoints and no actions. All state changes go through
-`node factory/bin/factory.mjs`.
+`software-forge`.
 
 ## Sample mode
 
