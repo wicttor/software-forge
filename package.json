@@ -1,0 +1,14 @@
+{
+  "name": "software-factory",
+  "private": true,
+  "type": "module",
+  "description": "A small, visual, runtime-agnostic software factory (see factory/orchestrator.md).",
+  "scripts": {
+    "factory": "node factory/bin/factory.mjs",
+    "test": "node --test factory/test/*.test.mjs",
+    "dashboard": "npm --prefix factory/dashboard run dev",
+    "dashboard:build": "npm --prefix factory/dashboard run build",
+    "dashboard:preview": "npm --prefix factory/dashboard run preview"
+  },
+  "engines": { "node": ">=20" }
+}
