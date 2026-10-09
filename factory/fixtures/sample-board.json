@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-09T12:00:00.000Z",
+  "jobs": [
+    {
+      "id": "001-csv-export",
+      "title": "CSV export for reports",
+      "branch": "factory/001-csv-export",
+      "stage": "merged",
+      "round": 1,
+      "risk": "Low",
+      "complexity": "LOW",
+      "reviews": { "code": "PASS", "security": "PASS", "ux": "skipped", "ui-design": "skipped" },
+      "rounds": [
+        { "round": 1, "reviews": { "code": "PASS", "security": "PASS", "ux": "skipped", "ui-design": "skipped" } }
+      ],
+      "files": [
+        "factory/jobs/001-csv-export/spec.md",
+        "docs/plans/001-csv-export.md",
+        "factory/jobs/001-csv-export/build.md",
+        "factory/jobs/001-csv-export/decision.md"
+      ],
+      "runtime": "documented in factory/runtime-adapter.md",
+      "dryRun": false,
+      "updatedAt": "2026-10-08T15:20:00.000Z"
+    },
+    {
+      "id": "002-login-form",
+      "title": "Accessible login form",
+      "branch": "factory/002-login-form",
+      "stage": "needs-human",
+      "round": 2,
+      "risk": "Medium",
+      "complexity": "MEDIUM",
+      "reviews": { "code": "PASS", "security": "CHANGES", "ux": "PASS", "ui-design": "PASS", "accessibility": "PASS" },
+      "rounds": [
+        { "round": 1, "reviews": { "code": "CHANGES", "security": "CHANGES", "ux": "PASS", "ui-design": "PASS", "accessibility": "CHANGES" } },
+        { "round": 2, "reviews": { "code": "PASS", "security": "CHANGES", "ux": "PASS", "ui-design": "PASS", "accessibility": "PASS" } }
+      ],
+      "files": [
+        "factory/jobs/002-login-form/spec.md",
+        "docs/plans/002-login-form.md",
+        "factory/jobs/002-login-form/round-2/review-security.md"
+      ],
+      "blocker": "Second review round returned CHANGES (security): password reset token lifetime needs a product decision.",
+      "runtime": "documented in factory/runtime-adapter.md",
+      "dryRun": false,
+      "updatedAt": "2026-10-09T10:05:00.000Z"
+    },
+    {
+      "id": "003-rate-limiting",
+      "title": "Rate limiting for public API",
+      "branch": "factory/003-rate-limiting",
+      "stage": "review",
+      "round": 2,
+      "risk": "High",
+      "complexity": "HIGH",
+      "reviews": { "security": "CHANGES", "ux": "skipped", "ui-design": "skipped", "code": "PASS", "performance": "pending", "infrastructure": "pending" },
+      "rounds": [
+        { "round": 1, "reviews": { "security": "CHANGES", "ux": "skipped", "ui-design": "skipped", "code": "CHANGES", "performance": "PASS", "infrastructure": "PASS" } },
+        { "round": 2, "reviews": { "security": "CHANGES", "ux": "skipped", "ui-design": "skipped", "code": "PASS", "performance": "pending", "infrastructure": "pending" } }
+      ],
+      "files": ["factory/jobs/003-rate-limiting/spec.md", "docs/plans/003-rate-limiting.md"],
+      "runtime": "documented in factory/runtime-adapter.md",
+      "dryRun": false,
+      "updatedAt": "2026-10-09T11:40:00.000Z"
+    },
+    {
+      "id": "004-dark-mode",
+      "title": "Dark mode toggle",
+      "branch": "factory/004-dark-mode",
+      "stage": "plan-approval",
+      "round": 0,
+      "risk": "Low",
+      "complexity": "LOW",
+      "reviews": {},
+      "rounds": [],
+      "files": ["factory/jobs/004-dark-mode/spec.md", "docs/plans/004-dark-mode.md"],
+      "runtime": "documented in factory/runtime-adapter.md",
+      "dryRun": false,
+      "updatedAt": "2026-10-09T11:55:00.000Z"
+    },
+    {
+      "id": "005-audit-log",
+      "title": "Audit log retention",
+      "branch": "factory/005-audit-log",
+      "stage": "brainstorm",
+      "round": 0,
+      "risk": null,
+      "complexity": null,
+      "reviews": {},
+      "rounds": [],
+      "files": [],
+      "runtime": "documented in factory/runtime-adapter.md",
+      "dryRun": false,
+      "updatedAt": "2026-10-09T11:58:00.000Z"
+    }
+  ],
+  "log": [
+    { "at": "2026-10-09T11:40:00.000Z", "job": "003-rate-limiting", "from": "building", "to": "review", "note": "round 2 dispatched" },
+    { "at": "2026-10-09T10:05:00.000Z", "job": "002-login-form", "from": "review", "to": "needs-human", "note": "second CHANGES" }
+  ]
+}
